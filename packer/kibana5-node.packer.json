@@ -1,0 +1,62 @@
+{
+  "variables": {
+    "elasticsearch_version": "5.6.2",
+    "aws_elasticsearch_ami": "{{env `ES5_AMI`}}",
+    "azure_client_id": "479a3a7e-ce8a-4426-b2ab-fe9889441263",
+    "azure_client_secret": "1Luvf00tb@11",
+    "azure_subscription_id": "0c7d154b-32f5-42f0-ac69-845a1c9e0c70",
+    "azure_tenant_id": "20b382fd-aa93-4c60-829d-953fb3853002",
+    "azure_location": "East US",
+    "azure_resource_group_name": "custom-images",
+    "azure_elasticsearch_image_name": "elasticsearch5-2018-02-07T082334"
+  },
+  "description": "Kibana Image",
+  "builders": [
+    {
+      "type": "azure-arm",
+
+      "client_id": "{{user `azure_client_id`}}",
+      "client_secret": "{{user `azure_client_secret`}}",
+      "tenant_id": "{{user `azure_tenant_id`}}",
+      "subscription_id": "{{user `azure_subscription_id`}}",
+
+      "managed_image_resource_group_name": "{{user `azure_resource_group_name`}}",
+      "managed_image_name": "kibana5-{{isotime \"2006-01-02T030405\"}}",
+
+      "os_type": "Linux",
+      "custom_managed_image_name": "{{user `azure_elasticsearch_image_name`}}",
+      "custom_managed_image_resource_group_name":"{{user `azure_resource_group_name`}}",
+
+      "location": "{{user `azure_location`}}",
+      "vm_size": "Standard_DS2_v2"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "install-kibana5.sh",
+      "environment_vars": [ "ES_VERSION={{user `elasticsearch_version`}}" ],
+      "execute_command": "echo '' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "script": "install-grafana.sh",
+      "execute_command": "echo '' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "script": "install-cerebro.sh",
+      "execute_command": "echo '' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "file",
+      "source": "../templates/nginx-client.conf",
+      "destination": "nginx-client.conf"
+    },
+    {
+      "type": "shell",
+      "script": "install-nginx.sh",
+      "execute_command": "echo '' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    }
+  ]
+}

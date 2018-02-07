@@ -1,0 +1,84 @@
+{
+  "description": "Elasticsarch Image",
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "ami_name": "elasticsearch5-{{isotime | clean_ami_name}}",
+      "availability_zone": "{{user `aws_az`}}",
+      "iam_instance_profile": "packer",
+      "instance_type": "t2.micro",
+      "region": "{{user `aws_region`}}",
+      "run_tags": {
+        "role": "packer"
+      },
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "*ubuntu-xenial-16.04-amd64-server-*",
+          "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "ssh_timeout": "10m",
+      "ssh_username": "ubuntu",
+      "tags": {
+        "ImageType": "elasticsearch-packer-image"
+      },
+      "spot_price_auto_product": "Linux/UNIX (Amazon VPC)",
+      "ena_support": true
+    },
+    {
+      "type": "azure-arm",
+
+      "client_id": "479a3a7e-ce8a-4426-b2ab-fe9889441263",
+      "client_secret": "1Luvf00tb@11",
+      "tenant_id": "20b382fd-aa93-4c60-829d-953fb3853002",
+      "subscription_id": "0c7d154b-32f5-42f0-ac69-845a1c9e0c70",
+
+      "managed_image_resource_group_name": "custom-images",
+      "managed_image_name": "elasticsearch5-{{isotime \"2006-01-02T030405\"}}",
+
+      "os_type": "Linux",
+      "image_publisher": "Canonical",
+      "image_offer": "UbuntuServer",
+      "image_sku": "16.04-LTS",
+
+      "location": "East US",
+      "vm_size": "Standard_DS2_v2"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "update-machine.sh",
+      "execute_command": "echo '' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "file",
+      "source": "../templates/elasticsearch.yml",
+      "destination": "elasticsearch.yml"
+    },
+    {
+      "type": "shell",
+      "script": "install-java8.sh",
+      "execute_command": "echo '' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "script": "install-elasticsearch5.sh",
+      "environment_vars": [ "ES_VERSION=5.6.2" ],
+      "execute_command": "echo '' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "script": "install-cloud-plugin.sh",
+      "execute_command": "echo '' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "script": "install-custom.sh",
+      "execute_command": "echo '' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    }
+  ]
+}
