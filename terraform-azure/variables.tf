@@ -38,7 +38,7 @@ variable "environment" {
 
 variable "data_instance_type" {
   type    = "string"
-  default = "Standard_DS2_v2"
+  default = "Standard_DS3_v2"
 }
 
 variable "master_instance_type" {
