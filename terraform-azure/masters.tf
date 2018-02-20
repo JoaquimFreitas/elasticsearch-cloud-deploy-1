@@ -70,7 +70,8 @@ resource "azurerm_virtual_machine_scale_set" "master-nodes" {
     disable_password_authentication = true
 
     ssh_keys {
-      path     = "/home/ubuntu/.ssh/authorized_keys"
+      #path     = "/home/ubuntu/.ssh/authorized_keys"
+      path     = "/home/.ssh/authorized_keys"
       key_data = "${file(var.key_path)}"
     }
   }
