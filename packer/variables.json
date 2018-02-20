@@ -1,5 +1,6 @@
 {
   "elasticsearch_version": "5.6.2",
+  "cloud_provider": "azure",
 
   "aws_region": "us-east-1",
   "aws_az": "us-east-1d",
@@ -15,5 +16,6 @@
 
   "azure_location": "East US",
   "azure_resource_group_name": "custom-images",
-  "azure_elasticsearch_image_name": "es-image-v1"
+  "azure_spel_image_name": "spel-minimal-centos-7.4-azure-image-02092018",
+  "azure_elasticsearch_image_name": "elasticsearch5-2018-02-11T105507"
 }

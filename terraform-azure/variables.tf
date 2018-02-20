@@ -29,7 +29,7 @@ variable "es_cluster" {
 
 variable "key_path" {
   description = "Key name to be used with the launched EC2 instances."
-  default     = "~/.ssh/id_rsa.pub"
+  default     = "~/.ssh/admbyronb.pub"
 }
 
 variable "environment" {

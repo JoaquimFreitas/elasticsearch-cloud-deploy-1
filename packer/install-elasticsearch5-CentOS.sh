@@ -8,7 +8,7 @@ sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 # If installing the latest version of ElasticSearch, add code to create
 # elasticsearch.repo file in the /etc/yum.repos.d directory
 
-# Download ElasticSearch RPM and check file integrity
+# Download ElasticSearch RPM and check fil integrity
 wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.2.rpm
 # Add code to modify elasticsearch-5.6.2.rpm.sha512 file and then use it to check file integrity
   #Modify file

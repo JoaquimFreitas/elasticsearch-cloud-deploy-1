@@ -15,8 +15,8 @@ if [ -z "$ES_VERSION" ]; then
 else
     echo "Installing Kibana version $ES_VERSION"
     #apt-get install kibana=$ES_VERSION
-    wget https://artifacts.elastic.co/downloads/kibana/kibana-$ES_VERSION-x86_64.rpm
-    rpm --install kibana-$ES_VERSION-x86_64.rpm
+    wget https://artifacts.elastic.co/downloads/elasticsearch/kibana-5.6.2.rpm
+    rpm --install kibana-$ES_VERSION.rpm
 fi
 
 cd /usr/share/kibana/
@@ -26,7 +26,7 @@ chown kibana:kibana * -R
 # This needs to be here explicitly because of a long first-initialization time of Kibana
 systemctl daemon-reload
 systemctl enable kibana.service
-service kibana start
+sudo service kibana start
 
 printf 'Waiting for Kibana to initialize...'
 until $(curl --output /dev/null --silent --head --fail http://localhost:5601); do
