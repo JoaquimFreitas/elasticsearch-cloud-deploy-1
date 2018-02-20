@@ -3,10 +3,10 @@
 
 data "azurerm_image" "elasticsearch" {
   name                = "elasticsearch5-2018-02-11T105507"
-  resource_group_name = "packer-elasticsearch-images"
+  resource_group_name = "custom-images"
 }
 
 data "azurerm_image" "kibana" {
   name                = "kibana5-2018-02-15T111136"
-  resource_group_name = "packer-elasticsearch-images"
+  resource_group_name = "custom-images"
 }
